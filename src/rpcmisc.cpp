@@ -3,7 +3,6 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-//#include "string.h"
 #include "string"
 #include "base58.h"
 #include "init.h"
@@ -469,7 +468,6 @@ Value addubi(const Array& params, bool fHelp)
 
 Value hexconversion(const Array& params, bool fHelp)
 {
-    //  curl -o - https://chainz.cryptoid.info/smly/api.dws?q=totalbc
     if (fHelp || params.size() != 2)
         throw runtime_error(
 	    " hexconversion \"string\" \"string\" \n"
@@ -484,17 +482,16 @@ Value hexconversion(const Array& params, bool fHelp)
     
     string dataInput = params[0].get_str();
     string strInput = params[1].get_str();
-    //int64_t output = -1;
-
+    
+    // int --> hex
     if(strInput == "tohex"){
         int64_t intInput = stol(dataInput);
         std::stringstream stream;
-        //stream << std::hex << dataInput;
         stream << std::hex << intInput;
-        //std::string result(stream.str());
         return stream.str();
         
     }
+    // hex --> int
     if(strInput == "todecimal"){
         int64_t output = -1;
         std::string outputString;
