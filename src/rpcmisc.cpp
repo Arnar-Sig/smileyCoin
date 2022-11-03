@@ -3,6 +3,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+//#include "string.h"
+#include "string"
 #include "base58.h"
 #include "init.h"
 #include "main.h"
@@ -464,6 +466,47 @@ Value addubi(const Array& params, bool fHelp)
 
     return wtx.GetHash().GetHex();
 }
+
+Value hexconversion(const Array& params, bool fHelp)
+{
+    //  curl -o - https://chainz.cryptoid.info/smly/api.dws?q=totalbc
+    if (fHelp || params.size() != 2)
+        throw runtime_error(
+	    " hexconversion \"string\" \"string\" \n"
+	    "\n Returns the converted value from int to hex or hex to int.\n"
+	    "\n Arguments: \n"
+	    "\n 1. \"string\" (string, required). The input to be converted.\n"
+	    "\n 2. \"string\" (string, required). Which direction the conversion should go:"
+        "\"tohex\" or \"todecimal\".\n"
+	    "\n Result:"
+	    "\"output\" (string)  The string output of the conversion.\n"
+        );
+    
+    string dataInput = params[0].get_str();
+    string strInput = params[1].get_str();
+    //int64_t output = -1;
+
+    if(strInput == "tohex"){
+        int64_t intInput = stol(dataInput);
+        std::stringstream stream;
+        //stream << std::hex << dataInput;
+        stream << std::hex << intInput;
+        //std::string result(stream.str());
+        return stream.str();
+        
+    }
+    if(strInput == "todecimal"){
+        int64_t output = -1;
+        std::string outputString;
+        std::stringstream hexstream; 
+        hexstream << std::hex << dataInput;
+        hexstream >> output;
+        outputString = std::to_string(output);
+        return outputString;
+    }
+    return -1;
+}
+
 
 Value deleteubi(const Array& params, bool fHelp)
 {
